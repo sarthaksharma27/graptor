@@ -1,0 +1,39 @@
+{
+  "name": "graptor",
+  "version": "1.0.0",
+  "description": "Generate ASTs of your codebase via CLI",
+  "homepage": "https://github.com/sarthaksharma27/graptor#readme",
+  "bugs": {
+    "url": "https://github.com/sarthaksharma27/graptor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarthaksharma27/graptor.git"
+  },
+  "license": "MIT",
+  "author": "Sarthak Sharma",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "bin": {
+    "graptor": "./bin/graptor.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.28.0",
+    "@babel/traverse": "^7.28.0",
+    "commander": "^14.0.0",
+    "fast-glob": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
