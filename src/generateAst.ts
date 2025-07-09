@@ -2,11 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import { parse } from '@babel/parser';
 import fg from 'fast-glob';
+import defaultIgnorePatterns from './defaultIgnore';
+
 
 export function generateASTs(baseDir: string): void {
-  const files = fg.sync(['**/*.ts', '**/*.js'], {
+  const files = fg.sync(['**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx'], {
     cwd: baseDir,
-    ignore: ['node_modules'],
+    ignore: defaultIgnorePatterns,
     absolute: true,
   });
 
@@ -16,7 +18,7 @@ export function generateASTs(baseDir: string): void {
     try {
       const code = fs.readFileSync(file, 'utf-8');
       const ast = parse(code, {
-        sourceType: 'module',
+        sourceType: 'unambiguous',
         plugins: ['typescript', 'jsx'],
       });
 
