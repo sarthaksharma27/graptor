@@ -1,1 +1,1 @@
-"# graptor" 
+Graptor is Cli based tool which Understand your codebase structure in a machine-readable way
