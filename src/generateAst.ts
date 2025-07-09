@@ -3,7 +3,7 @@ import path from 'path';
 import { parse } from '@babel/parser';
 import fg from 'fast-glob';
 import defaultIgnorePatterns from './defaultIgnore';
-
+import { extractSemantics } from './extractSemantics';
 
 export function generateASTs(baseDir: string): void {
   const files = fg.sync(['**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx'], {
@@ -12,7 +12,7 @@ export function generateASTs(baseDir: string): void {
     absolute: true,
   });
 
-  const result: Record<string, any> = {};
+  const result: Record<string, any[]> = {};
 
   for (const file of files) {
     try {
@@ -22,8 +22,10 @@ export function generateASTs(baseDir: string): void {
         plugins: ['typescript', 'jsx'],
       });
 
+      const semantic = extractSemantics(ast);
       const relativePath = path.relative(baseDir, file);
-      result[relativePath] = ast;
+      result[relativePath] = semantic;
+
       console.log(`✅ Parsed: ${relativePath}`);
     } catch (error) {
       console.warn(`❌ Failed to parse ${file}: ${(error as Error).message}`);
@@ -31,5 +33,5 @@ export function generateASTs(baseDir: string): void {
   }
 
   fs.writeFileSync('graptor.ast.json', JSON.stringify(result, null, 2));
-  console.log('\n🎉 ASTs written to graptor.ast.json');
+  console.log('\n🎉 Semantic ASTs written to graptor.ast.json');
 }
