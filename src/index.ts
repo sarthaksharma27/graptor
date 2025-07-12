@@ -2,10 +2,11 @@
 
 import { program } from 'commander';
 import { generateASTs } from './generateAst';
+import { generateCodeGraph } from './generateCodeGraph';
 
 program
   .name('graptor')
-  .description('Generate AST from codebase')
+  .description('Graptor CLI - Understand your codebase')
   .version('0.1.0');
 
 program
@@ -13,6 +14,13 @@ program
   .description('Generate AST from a directory of code')
   .action((dir: string) => {
     generateASTs(dir);
+  });
+
+program
+  .command('graph')
+  .description('Generate Code Graph from AST')
+  .action(() => {
+    generateCodeGraph(); // uses default .graptor/graptor.ast.json
   });
 
 program.parse();

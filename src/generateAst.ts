@@ -32,6 +32,12 @@ export function generateASTs(baseDir: string): void {
     }
   }
 
-  fs.writeFileSync('graptor.ast.json', JSON.stringify(result, null, 2));
-  console.log('\n🎉 Semantic ASTs written to graptor.ast.json');
+  // ✅ Ensure .graptor directory exists
+  const outputDir = '.graptor';
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+  }
+
+  fs.writeFileSync(path.join(outputDir, 'graptor.ast.json'), JSON.stringify(result, null, 2));
+  console.log('\n🎉 Semantic ASTs written to .graptor/graptor.ast.json');
 }

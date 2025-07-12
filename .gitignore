@@ -3,4 +3,5 @@ dist/
 *.log
 .env
 test/
-graptor.ast.json/
+.graptor/graptor.ast.json
+.graptor/graptor.graph.json
