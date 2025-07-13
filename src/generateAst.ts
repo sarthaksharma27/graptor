@@ -26,13 +26,12 @@ export function generateASTs(baseDir: string): void {
       const relativePath = path.relative(baseDir, file);
       result[relativePath] = semantic;
 
-      console.log(`✅ Parsed: ${relativePath}`);
+      console.log(`Parsed: ${relativePath}`);
     } catch (error) {
       console.warn(`❌ Failed to parse ${file}: ${(error as Error).message}`);
     }
   }
 
-  // ✅ Ensure .graptor directory exists
   const outputDir = '.graptor';
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);

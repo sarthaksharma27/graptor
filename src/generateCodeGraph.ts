@@ -65,12 +65,11 @@ export function generateCodeGraph(astPath: string = '.graptor/graptor.ast.json')
       }
     }
 
-    // Add import edges
     if (fileToImports[file]) {
       for (const imported of fileToImports[file]) {
         let resolved = imported;
         if (!resolved.endsWith('.ts') && !resolved.endsWith('.js')) {
-          resolved += '.ts'; // crude resolution
+          resolved += '.ts';
         }
 
         const importPath = path.join(path.dirname(file), resolved);
@@ -85,9 +84,8 @@ export function generateCodeGraph(astPath: string = '.graptor/graptor.ast.json')
     }
   }
 
-  // Ensure output folder exists
   if (!fs.existsSync('.graptor')) fs.mkdirSync('.graptor');
 
   fs.writeFileSync('.graptor/graptor.graph.json', JSON.stringify({ nodes, edges }, null, 2));
-  console.log('✅ Code graph written to .graptor/graptor.graph.json');
+  console.log('🎉 Code graph written to .graptor/graptor.graph.json');
 }

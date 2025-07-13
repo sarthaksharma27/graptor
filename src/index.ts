@@ -20,7 +20,7 @@ program
   .command('graph')
   .description('Generate Code Graph from AST')
   .action(() => {
-    generateCodeGraph(); // uses default .graptor/graptor.ast.json
+    generateCodeGraph();
   });
 
 program.parse();
