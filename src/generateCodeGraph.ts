@@ -3,13 +3,13 @@ import path from 'path';
 
 type GraphNode = {
   id: string;
-  type: 'file' | 'function' | 'class';
+  type: 'file' | 'function' | 'class' | 'jsx' | 'interface' | 'type';
 };
 
 type GraphEdge = {
   from: string;
   to: string;
-  relation: 'defines' | 'calls' | 'imports';
+  relation: 'defines' | 'calls' | 'imports' | 'uses-jsx';
 };
 
 type SemanticAST = Record<string, any[]>;
@@ -28,23 +28,57 @@ export function generateCodeGraph(astPath: string = '.graptor/graptor.ast.json')
     nodes.push({ id: file, type: 'file' });
 
     for (const node of nodesInFile) {
-      if (node.type === 'FunctionDeclaration' || node.type === 'VariableFunction') {
-        const fnId = `${file}::${node.name}`;
-        nodes.push({ id: fnId, type: 'function' });
-        edges.push({ from: file, to: fnId, relation: 'defines' });
-        funcToFile[node.name] = file;
-      }
+      switch (node.type) {
+        case 'FunctionDeclaration':
+        case 'VariableFunction': {
+          const fnId = `${file}::${node.name}`;
+          nodes.push({ id: fnId, type: 'function' });
+          edges.push({ from: file, to: fnId, relation: 'defines' });
+          funcToFile[node.name] = file;
+          break;
+        }
 
-      if (node.type === 'ClassDeclaration') {
-        const classId = `${file}::${node.name}`;
-        nodes.push({ id: classId, type: 'class' });
-        edges.push({ from: file, to: classId, relation: 'defines' });
-      }
+        case 'ClassDeclaration': {
+          const classId = `${file}::${node.name}`;
+          nodes.push({ id: classId, type: 'class' });
+          edges.push({ from: file, to: classId, relation: 'defines' });
+          break;
+        }
 
-      if (node.type === 'ImportDeclaration') {
-        const imported = node.source;
-        fileToImports[file] = fileToImports[file] || [];
-        fileToImports[file].push(imported);
+        case 'JSXElement': {
+          const jsxId = `${file}::jsx::${node.name}`;
+          nodes.push({ id: jsxId, type: 'jsx' });
+          edges.push({ from: file, to: jsxId, relation: 'uses-jsx' });
+          break;
+        }
+
+        case 'InterfaceDeclaration': {
+          const id = `${file}::interface::${node.name}`;
+          nodes.push({ id, type: 'interface' });
+          edges.push({ from: file, to: id, relation: 'defines' });
+          break;
+        }
+
+        case 'TypeAlias': {
+          const id = `${file}::type::${node.name}`;
+          nodes.push({ id, type: 'type' });
+          edges.push({ from: file, to: id, relation: 'defines' });
+          break;
+        }
+
+        case 'ImportDeclaration': {
+          const imported = node.source;
+          fileToImports[file] = fileToImports[file] || [];
+          fileToImports[file].push(imported);
+          break;
+        }
+
+        case 'DynamicImport': {
+          const imported = node.source;
+          fileToImports[file] = fileToImports[file] || [];
+          fileToImports[file].push(imported);
+          break;
+        }
       }
     }
   }

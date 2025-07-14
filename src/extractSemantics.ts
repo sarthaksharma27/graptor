@@ -6,6 +6,7 @@ export function extractSemantics(ast: t.File): SemanticNode[] {
   const semanticNodes: SemanticNode[] = [];
 
   traverse(ast, {
+    // Static import
     ImportDeclaration(path) {
       semanticNodes.push({
         type: 'ImportDeclaration',
@@ -14,9 +15,37 @@ export function extractSemantics(ast: t.File): SemanticNode[] {
           local: s.local.name,
           imported:
             'imported' in s && t.isIdentifier(s.imported)
-                ? s.imported.name
-                : 'default',
+              ? s.imported.name
+              : 'default',
         })),
+      });
+    },
+
+    // Dynamic import (import())
+    CallExpression(path) {
+      if (
+        t.isImport(path.node.callee) &&
+        t.isStringLiteral(path.node.arguments[0])
+      ) {
+        semanticNodes.push({
+          type: 'DynamicImport',
+          source: path.node.arguments[0].value,
+        });
+        return;
+      }
+
+      let calleeName = 'unknown';
+      if (t.isIdentifier(path.node.callee)) {
+        calleeName = path.node.callee.name;
+      } else if (t.isMemberExpression(path.node.callee)) {
+        const object = path.node.callee.object;
+        const property = path.node.callee.property;
+        calleeName = `${getNodeName(object)}.${getNodeName(property)}`;
+      }
+
+      semanticNodes.push({
+        type: 'CallExpression',
+        callee: calleeName,
       });
     },
 
@@ -33,6 +62,9 @@ export function extractSemantics(ast: t.File): SemanticNode[] {
       semanticNodes.push({
         type: 'FunctionDeclaration',
         name: path.node.id?.name || 'anonymous',
+        params: path.node.params.map(param =>
+          t.isIdentifier(param) ? param.name : 'unknown'
+        ),
       });
     },
 
@@ -44,31 +76,55 @@ export function extractSemantics(ast: t.File): SemanticNode[] {
         semanticNodes.push({
           type: 'VariableFunction',
           name: (path.node.id as t.Identifier).name,
+          params: path.node.init.params.map(param =>
+            t.isIdentifier(param) ? param.name : 'unknown'
+          ),
         });
       }
     },
 
     ClassDeclaration(path) {
+      const className = path.node.id?.name || 'anonymous';
+      const methods: string[] = [];
+
+      path.traverse({
+        ClassMethod(methodPath) {
+          if (t.isIdentifier(methodPath.node.key)) {
+            methods.push(methodPath.node.key.name);
+          }
+        },
+      });
+
       semanticNodes.push({
         type: 'ClassDeclaration',
-        name: path.node.id?.name || 'anonymous',
+        name: className,
+        methods,
       });
     },
 
-    CallExpression(path) {
-      let calleeName = 'unknown';
-
-      if (t.isIdentifier(path.node.callee)) {
-        calleeName = path.node.callee.name;
-      } else if (t.isMemberExpression(path.node.callee)) {
-        const object = path.node.callee.object;
-        const property = path.node.callee.property;
-        calleeName = `${getNodeName(object)}.${getNodeName(property)}`;
+    // React JSX usage
+    JSXElement(path) {
+      if (t.isJSXIdentifier(path.node.openingElement.name)) {
+        semanticNodes.push({
+          type: 'JSXElement',
+          name: path.node.openingElement.name.name,
+        });
       }
+    },
 
+    // TypeScript: Interface declarations
+    TSInterfaceDeclaration(path) {
       semanticNodes.push({
-        type: 'CallExpression',
-        callee: calleeName,
+        type: 'InterfaceDeclaration',
+        name: path.node.id.name,
+      });
+    },
+
+    // TypeScript: Type aliases
+    TSTypeAliasDeclaration(path) {
+      semanticNodes.push({
+        type: 'TypeAlias',
+        name: path.node.id.name,
       });
     },
   });
@@ -85,6 +141,6 @@ function getNameFromDeclaration(decl: t.Declaration): string | null {
 
 function getNodeName(node: t.Node): string {
   if (t.isIdentifier(node)) return node.name;
-  if (t.isLiteral(node) && 'value' in node) return String((node as any).value); // quick fix
+  if (t.isLiteral(node) && 'value' in node) return String((node as any).value);
   return 'unknown';
 }
