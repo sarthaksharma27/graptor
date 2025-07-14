@@ -3,13 +3,14 @@
 import { program } from 'commander';
 import { generateASTs } from './generateAst';
 import { generateCodeGraph } from './generateCodeGraph';
+const pkg = require('../package.json');
 import path from 'path';
 import fs from 'fs';
 
 program
   .name('graptor')
-  .description('Graptor CLI - Understand your codebase')
-  .version('0.1.0');
+  .description('Graptor is an Open source graph engine that understand your complex codebases')
+  .version(pkg.version);
 
 program
   .command('ast <directory>')
@@ -27,7 +28,7 @@ program
 
 program
   .command('run <directory>')
-  .description('Generate AST and Graph in one command')
+  .description('Generate code graph with single command (Recommended)')
   .action((dir: string) => {
     console.log(`Running Graptor on ${dir}`);
     generateASTs(dir);
