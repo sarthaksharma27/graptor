@@ -136,7 +136,7 @@ export function handleQuery(args: string[]) {
   break;
 }
 
-    case 'unused': {
+    case 'unused-fun': {
       const definedFunctions = graph.nodes
         .filter(n => n.type === 'function')
         .map(n => n.id);
@@ -149,7 +149,8 @@ export function handleQuery(args: string[]) {
 
       for (const fn of definedFunctions) {
         if (!calledFunctions.has(fn)) {
-          console.log(`❌ Unused: ${fn}`);
+          const [file, funcName] = fn.split('::');
+          console.log(`Unused function "${funcName}" found in file: ${file}`);
         }
       }
       break;

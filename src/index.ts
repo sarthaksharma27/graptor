@@ -67,9 +67,9 @@ query
   .action((file) => handleQuery(['imported-by', file]));
 
 query
-  .command('unused')
-  .description('List functions that are defined but never called')
-  .action(() => handleQuery(['unused']));
+  .command('unused-fun')
+  .description('List functions that are defined but never called or used')
+  .action(() => handleQuery(['unused-fun']));
 
 query
   .command('stats')
