@@ -44,7 +44,7 @@ program
     generateCodeGraph(astPath);
   });
 
-const query = program.command('query').description('Query your code graph');
+const query = program.command('query').description('Query your Codebase');
 
 query
   .command('calls <functionName>')

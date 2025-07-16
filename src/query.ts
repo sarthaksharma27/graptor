@@ -169,7 +169,7 @@ export function handleQuery(args: string[]) {
     }
 
     default:
-      console.error(`❌ Unknown query command "${command}". Try: calls | defined-in | imports | imported-by | unused | stats`);
+      console.error(`Unknown query command "${command}". Try: calls | defined-in | imports | imported-by | unused-fun | stats`);
       process.exit(1);
   }
 }
