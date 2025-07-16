@@ -44,11 +44,37 @@ program
     generateCodeGraph(astPath);
   });
 
-program
-  .command('query <subcommand> [arg]')
-  .description('Query your code graph (calls, defined-in, imports, imported-by, unused, stats)')
-  .action((subcommand: string, arg: string | undefined) => {
-    handleQuery([subcommand, arg ?? '']);
-  });
+const query = program.command('query').description('Query your code graph');
+
+query
+  .command('calls <functionName>')
+  .description('Show all places where a function is called')
+  .action((fn) => handleQuery(['calls', fn]));
+
+query
+  .command('defined-in <functionName>')
+  .description('Show the file where a function is defined')
+  .action((fn) => handleQuery(['defined-in', fn]));
+
+query
+  .command('imports <filePath>')
+  .description('Show all files that are imported by the given file')
+  .action((file) => handleQuery(['imports', file]));
+
+query
+  .command('imported-by <filePath>')
+  .description('Show all files that import the given file')
+  .action((file) => handleQuery(['imported-by', file]));
+
+query
+  .command('unused')
+  .description('List functions that are defined but never called')
+  .action(() => handleQuery(['unused']));
+
+query
+  .command('stats')
+  .description('Show statistics about your codebase (files, functions, classes)')
+  .action(() => handleQuery(['stats']));
+
 
 program.parse();
