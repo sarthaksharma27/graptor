@@ -43,18 +43,18 @@ export function handleQuery(args: string[]) {
   switch (command) {
     case 'calls': {
       if (!param) {
-        console.error('❌ Please specify a function name. Example: `graptor query calls add`');
+        console.error('Please specify a function name. Example: `graptor query calls add`');
         process.exit(1);
       }
 
       if (!functionNames.has(param)) {
-        console.error(`❌ Function "${param}" not found. Function names are case-sensitive.`);
+        console.error(`Error: Function "${param}" not found. Hint: Function names are case-sensitive.`);
         process.exit(1);
       }
 
       const matches = graph.edges.filter(e => e.relation === 'calls' && e.to.endsWith(`::${param}`));
       if (matches.length === 0) {
-        console.log(`ℹ️ No calls to "${param}" found.`);
+        console.log(`No direct calls to "${param}" were found. Tip: No other functions directly invoke it.`);
       } else {
         for (const match of matches) {
           console.log(`${match.from} → ${match.to}`);
