@@ -65,39 +65,46 @@ export function handleQuery(args: string[]) {
 
     case 'defined-in': {
       if (!param) {
-        console.error('❌ Please specify a function name. Example: `graptor query defined-in add`');
+        console.error('Please specify a function name. Example: `graptor query defined-in add`');
         process.exit(1);
       }
 
       if (!functionNames.has(param)) {
-        console.error(`❌ Function "${param}" not found. Function names are case-sensitive.`);
+        console.error(`Error: Function "${param}" not found. Hint: Function names are case-sensitive.`);
         process.exit(1);
       }
 
       const def = graph.nodes.find(n => n.type === 'function' && n.id.endsWith(`::${param}`));
       if (def) {
-        console.log(`${param} is defined in: ${def.id.split('::')[0]}`);
+        console.log(`Function ${param} is defined in ${def.id.split('::')[0]}`);
       }
       break;
     }
 
     case 'imports': {
-      if (!param) {
-        console.error('❌ Please specify a file. Example: `graptor query imports file.ts`');
-        process.exit(1);
-      }
-
-      const imports = graph.edges.filter(e => e.relation === 'imports' && e.from === param);
-      if (imports.length === 0) {
-        console.log(`ℹ️ No imports found in ${param}`);
-      } else {
-        for (const imp of imports) {
-          console.log(`${param} imports ${imp.to}`);
-        }
-      }
-      break;
+    if (!param) {
+      console.error('Please specify a file. Example: `graptor query imports main.ts`');
+      process.exit(1);
     }
 
+    const normalizedParam = path.normalize(param);
+
+    const fileExists = graph.nodes.some(n => n.type === 'file' && path.normalize(n.id) === normalizedParam);
+    if (!fileExists) {
+      console.error(`File "${param}" not found. Please check the file name.`);
+      process.exit(1);
+    }
+
+    const imports = graph.edges.filter(e => e.relation === 'imports' && path.normalize(e.from) === normalizedParam);
+    if (imports.length === 0) {
+      console.log(`No imports found in file ${param}`);
+    } else {
+      for (const imp of imports) {
+        console.log(`${param} imports ${imp.to}`);
+      }
+    }
+  break;
+}
     case 'imported-by': {
       if (!param) {
         console.error('❌ Please specify a file. Example: `graptor query imported-by file.ts`');
