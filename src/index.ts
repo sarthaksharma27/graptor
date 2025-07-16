@@ -6,6 +6,14 @@ import { generateCodeGraph } from './generateCodeGraph';
 const pkg = require('../package.json');
 import path from 'path';
 import fs from 'fs';
+import {
+  queryCalls,
+  queryDefinedIn,
+  queryImports,
+  queryImportedBy,
+  queryUnused,
+  queryStats,
+} from './query';
 
 program
   .name('graptor')
@@ -40,6 +48,38 @@ program
     }
 
     generateCodeGraph(astPath);
+  });
+
+program
+  .command('query <subcommand> [arg]')
+  .description('Query your code graph (calls, defined-in, imports, imported-by, unused, stats)')
+  .action((subcommand: string, arg: string | undefined) => {
+    switch (subcommand) {
+      case 'calls':
+        if (!arg) return console.error('Function name required.');
+        queryCalls(arg);
+        break;
+      case 'defined-in':
+        if (!arg) return console.error('Symbol name required.');
+        queryDefinedIn(arg);
+        break;
+      case 'imports':
+        if (!arg) return console.error('File path required.');
+        queryImports(arg);
+        break;
+      case 'imported-by':
+        if (!arg) return console.error('File path required.');
+        queryImportedBy(arg);
+        break;
+      case 'unused':
+        queryUnused();
+        break;
+      case 'stats':
+        queryStats();
+        break;
+      default:
+        console.error(`Unknown query subcommand: ${subcommand}`);
+    }
   });
 
 program.parse();
