@@ -14,7 +14,6 @@ program
   .description('Graptor is an open-source graph engine that understands your complex codebases.')
   .version(pkg.version);
 
-// AST generation command
 program
   .command('ast <directory>')
   .description('Generate AST from a directory of code')
@@ -22,7 +21,6 @@ program
     generateASTs(dir);
   });
 
-// Graph generation command
 program
   .command('graph')
   .description('Generate Code Graph from AST')
@@ -30,7 +28,6 @@ program
     generateCodeGraph();
   });
 
-// Full pipeline: AST + Graph
 program
   .command('run <directory>')
   .description('Generate code graph from source with a single command (recommended)')
@@ -40,14 +37,13 @@ program
 
     const astPath = path.join(process.cwd(), '.graptor', 'graptor.ast.json');
     if (!fs.existsSync(astPath)) {
-      console.error('❌ AST generation failed. Graph not generated.');
+      console.error('AST generation failed. Graph not generated.');
       process.exit(1);
     }
 
     generateCodeGraph(astPath);
   });
 
-// Query the graph
 program
   .command('query <subcommand> [arg]')
   .description('Query your code graph (calls, defined-in, imports, imported-by, unused, stats)')
