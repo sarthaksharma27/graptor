@@ -106,21 +106,35 @@ export function handleQuery(args: string[]) {
   break;
 }
     case 'imported-by': {
-      if (!param) {
-        console.error('❌ Please specify a file. Example: `graptor query imported-by file.ts`');
-        process.exit(1);
-      }
-
-      const importedBy = graph.edges.filter(e => e.relation === 'imports' && e.to === param);
-      if (importedBy.length === 0) {
-        console.log(`ℹ️ No files import ${param}`);
-      } else {
-        for (const imp of importedBy) {
-          console.log(`${param} is imported by ${imp.from}`);
-        }
-      }
-      break;
+    if (!param) {
+      console.error('Please specify a file. Example: `graptor query imported-by main.ts`');
+      process.exit(1);
     }
+
+    const normalizedParam = path.normalize(param);
+
+    const fileExists = graph.nodes.some(
+      (n) => n.type === 'file' && path.normalize(n.id) === normalizedParam
+    );
+
+    if (!fileExists) {
+      console.error(`File "${param}" not found. Please check the file name.`);
+      process.exit(1);
+    }
+
+    const importedBy = graph.edges.filter(
+      (e) => e.relation === 'imports' && path.normalize(e.to) === normalizedParam
+    );
+
+    if (importedBy.length === 0) {
+      console.log(`No files import ${param}`);
+    } else {
+      for (const imp of importedBy) {
+        console.log(`${param} is imported by ${imp.from}`);
+      }
+    }
+  break;
+}
 
     case 'unused': {
       const definedFunctions = graph.nodes
