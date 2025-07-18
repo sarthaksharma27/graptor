@@ -150,7 +150,7 @@ export function handleQuery(args: string[]) {
       for (const fn of definedFunctions) {
         if (!calledFunctions.has(fn)) {
           const [file, funcName] = fn.split('::');
-          console.log(`Unused function "${funcName}" found in file: ${file}`);
+          console.log(`🧹 Unused function "${funcName}" found in file: ${file}`);
         }
       }
       break;
@@ -162,8 +162,8 @@ export function handleQuery(args: string[]) {
       const classCount = graph.nodes.filter(n => n.type === 'class').length;
 
       console.log(`📊 Codebase Stats:`);
-      console.log(`Files: ${fileCount}`);
-      console.log(`Functions: ${functionCount}`);
+      console.log(`📁 Files: ${fileCount}`);
+      console.log(`🔧 Functions: ${functionCount}`);
       console.log(`Classes: ${classCount}`);
       break;
     }
