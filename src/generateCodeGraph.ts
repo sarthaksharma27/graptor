@@ -66,14 +66,9 @@ export function generateCodeGraph(astPath: string = '.graptor/graptor.ast.json')
           break;
         }
 
-        case 'ImportDeclaration': {
-          const imported = node.source;
-          fileToImports[file] = fileToImports[file] || [];
-          fileToImports[file].push(imported);
-          break;
-        }
-
-        case 'DynamicImport': {
+        case 'ImportDeclaration':
+        case 'DynamicImport':
+        case 'CommonJSImport': {
           const imported = node.source;
           fileToImports[file] = fileToImports[file] || [];
           fileToImports[file].push(imported);
@@ -99,22 +94,32 @@ export function generateCodeGraph(astPath: string = '.graptor/graptor.ast.json')
       }
     }
 
-    if (fileToImports[file]) {
-      for (const imported of fileToImports[file]) {
-        let resolved = imported;
-        if (!resolved.endsWith('.ts') && !resolved.endsWith('.js')) {
-          resolved += '.ts';
-        }
+    // Add import edges
+    const imports = fileToImports[file] || [];
+    for (const imported of imports) {
+      let resolvedPath: string;
 
-        const importPath = path.join(path.dirname(file), resolved);
-        if (astMap[importPath]) {
-          edges.push({
-            from: file,
-            to: importPath,
-            relation: 'imports',
-          });
+      if (imported.startsWith('.') || imported.startsWith('/')) {
+        resolvedPath = path.join(path.dirname(file), imported);
+
+        if (!resolvedPath.endsWith('.ts') && !resolvedPath.endsWith('.js')) {
+          if (astMap[`${resolvedPath}.ts`]) resolvedPath += '.ts';
+          else if (astMap[`${resolvedPath}.js`]) resolvedPath += '.js';
+          else resolvedPath += '.ts';
         }
+      } else {
+        resolvedPath = imported;
       }
+
+      if (!nodes.find(n => n.id === resolvedPath)) {
+        nodes.push({ id: resolvedPath, type: 'file' });
+      }
+
+      edges.push({
+        from: file,
+        to: resolvedPath,
+        relation: 'imports',
+      });
     }
   }
 

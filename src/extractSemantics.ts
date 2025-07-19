@@ -69,19 +69,73 @@ export function extractSemantics(ast: t.File): SemanticNode[] {
     },
 
     VariableDeclarator(path) {
-      if (
-        t.isFunctionExpression(path.node.init) ||
-        t.isArrowFunctionExpression(path.node.init)
-      ) {
-        semanticNodes.push({
-          type: 'VariableFunction',
-          name: (path.node.id as t.Identifier).name,
-          params: path.node.init.params.map(param =>
-            t.isIdentifier(param) ? param.name : 'unknown'
-          ),
+  const init = path.node.init;
+  const id = path.node.id;
+
+  // -------------------------
+  // 1. Handle require() calls
+  // -------------------------
+  if (
+    t.isCallExpression(init) &&
+    t.isIdentifier(init.callee, { name: 'require' }) &&
+    init.arguments.length === 1 &&
+    t.isStringLiteral(init.arguments[0])
+  ) {
+    const source = init.arguments[0].value;
+
+    // Case: const foo = require('bar');
+    if (t.isIdentifier(id)) {
+      semanticNodes.push({
+        type: 'CommonJSImport',
+        source,
+        specifiers: [
+          {
+            local: id.name,
+            imported: 'default',
+          },
+        ],
+      });
+    }
+
+    // Case: const { a, b: c } = require('bar');
+    else if (t.isObjectPattern(id)) {
+      const specifiers = id.properties
+        .filter((prop): prop is t.ObjectProperty => t.isObjectProperty(prop))
+        .map(prop => {
+          const imported = t.isIdentifier(prop.key)
+            ? prop.key.name
+            : 'unknown';
+          const local = t.isIdentifier(prop.value)
+            ? prop.value.name
+            : 'unknown';
+          return { local, imported };
         });
-      }
-    },
+
+      semanticNodes.push({
+        type: 'CommonJSImport',
+        source,
+        specifiers,
+      });
+    }
+  }
+
+  // -------------------------
+  // 2. Handle function variables
+  // -------------------------
+  if (
+    (t.isFunctionExpression(init) || t.isArrowFunctionExpression(init)) &&
+    t.isIdentifier(id)
+  ) {
+    semanticNodes.push({
+      type: 'VariableFunction',
+      name: id.name,
+      params: init.params.map(param =>
+        t.isIdentifier(param) ? param.name : 'unknown'
+      ),
+    });
+  }
+},
+
 
     ClassDeclaration(path) {
       const className = path.node.id?.name || 'anonymous';

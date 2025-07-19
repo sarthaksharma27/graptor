@@ -26,6 +26,11 @@ export type SemanticNode =
       specifiers: { local: string; imported: string }[];
     }
   | {
+    type: 'CommonJSImport';
+    source: string;
+    specifiers: { local: string; imported: string }[];
+    }
+  | {
       type: 'DynamicImport';
       source: string;
     }
