@@ -164,7 +164,7 @@ export function handleQuery(args: string[]) {
       console.log(`📊 Codebase Stats:`);
       console.log(`📁 Files: ${fileCount}`);
       console.log(`🔧 Functions: ${functionCount}`);
-      console.log(`Classes: ${classCount}`);
+      console.log(`    Classes: ${classCount}`);
       break;
     }
 
