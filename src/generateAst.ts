@@ -28,7 +28,7 @@ export function generateASTs(baseDir: string): void {
 
       console.log(`Parsed: ${relativePath}`);
     } catch (error) {
-      console.warn(`❌ Failed to parse ${file}: ${(error as Error).message}`);
+      console.warn(`Failed to parse ${file}: ${(error as Error).message}`);
     }
   }
 
