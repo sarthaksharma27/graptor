@@ -1,3 +1,1 @@
-Graptor is Cli based tool which Understand your codebase structure in a machine-readable way
-
-This is the first version of Graptor 
+This repo is under maintenance as we are moving from Babel to Tree Sitter
