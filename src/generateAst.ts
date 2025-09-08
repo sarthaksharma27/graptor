@@ -1,5 +1,20 @@
-export function generateASTs(baseDir: string) {
-  console.log(baseDir);
+import fg from "fast-glob";
+
+export async function generateASTs(baseDir: string) {
+  const files = await fg("**/*.{js,ts}", {
+    cwd: baseDir,        
+    absolute: true,    
+    ignore: [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**",
+      "**/build/**"
+    ]
+  });
+
+  for (const file of files) {
+    console.log("Found file:", file);
+  }
 }
 
 
