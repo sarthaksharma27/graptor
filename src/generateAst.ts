@@ -11,9 +11,16 @@ const SEMANTIC_NODE_TYPES = new Set([
   'export_statement',
 ]);
 
-function cstToSementic(node: SyntaxNode) {
-  console.log(node.namedChildren.length);
+function cstToSemantic(node: SyntaxNode) {
+  console.log("Top-level named children:", node.namedChildren.length);
+
+  node.namedChildren.forEach(child => {
+    if (SEMANTIC_NODE_TYPES.has(child.type)) {
+      console.log(child.type, "->", child.text);
+    }
+  });
 }
+
 
 export async function generateASTs(baseDir: string) {
   const files = await fg("**/*.{js,ts}", {
@@ -32,6 +39,6 @@ export async function generateASTs(baseDir: string) {
     console.log("Found file:", file);
     const readedfile = fs.readFileSync(file, "utf8")
     const tree = parser.parse(readedfile)
-    const ast = cstToSementic(tree.rootNode)
+    const ast = cstToSemantic(tree.rootNode)
   }
 }
