@@ -46,15 +46,16 @@ export async function generateASTs(baseDir: string) {
     ]
   });
 
+  const allASTs: Record<string, SemanticNode[]> = {};
 
-  for (const file of files) {
-    console.log("Found file:", file);
-    const readedfile = fs.readFileSync(file, "utf8")
-    const tree = parser.parse(readedfile)
-    const ast = cstToSemantic(tree.rootNode)
-    console.log(ast);
-    
-    fs.writeFileSync('graptor.ast', JSON.stringify(ast, null, 2), 'utf8');
-    console.log('Ast written successfully!');
+
+    for (const file of files) {
+    const code = fs.readFileSync(file, "utf8");
+    const tree = parser.parse(code);
+    const ast = cstToSemantic(tree.rootNode);
+    allASTs[file] = ast; 
   }
+
+  fs.writeFileSync('ast.json', JSON.stringify(allASTs, null, 2), 'utf8');
+  console.log('Ast written successfully!');
 }

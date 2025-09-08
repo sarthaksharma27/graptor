@@ -1,0 +1,17 @@
+{
+  "C:/Users/hp/X-project/graptor/test/index.ts": [
+    {
+      "type": "import_statement",
+      "text": "import fg from \"fast-glob\";"
+    },
+    {
+      "type": "import_statement",
+      "text": "import Parser, { SyntaxNode } from 'tree-sitter';"
+    },
+    {
+      "type": "export_statement",
+      "text": "export function Exportfunction() {\r\n  \r\n}"
+    }
+  ],
+  "C:/Users/hp/X-project/graptor/test/components/helpers.ts": []
+}
