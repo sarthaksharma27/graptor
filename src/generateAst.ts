@@ -13,8 +13,6 @@ const SEMANTIC_NODE_TYPES = new Set([
 
 function cstToSementic(node: SyntaxNode) {
   console.log(node);
-  
-  
 }
 
 export async function generateASTs(baseDir: string) {
@@ -28,6 +26,7 @@ export async function generateASTs(baseDir: string) {
       "**/build/**"
     ]
   });
+  
 
   for (const file of files) {
     console.log("Found file:", file);
