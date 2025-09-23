@@ -2,7 +2,7 @@
 
 import { program } from 'commander';
 import { generateASTs } from './generateAst';
-import { generateCodeGraph } from './generateCodeGraph';
+// import { generateCodeGraph } from './generateCodeGraph';
 
 const pkg = require('../package.json');
 
