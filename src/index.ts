@@ -2,6 +2,7 @@
 
 import { program } from 'commander';
 import { generateASTs } from './generateAst';
+import path from "path";
 // import { generateCodeGraph } from './generateCodeGraph';
 
 const pkg = require('../package.json');
@@ -13,18 +14,19 @@ program
 
 program
   .command('run <directory>')
-  .description('Generate code graph from source with a single command (recommended)')
+  .description('Generate code graph from source with a single command')
   .action((dir: string) => {
     console.log(`Running Graptor on ${dir}`);
-    generateASTs(dir);
+    // generateASTs(dir);
+    console.log(dir);
+    const abs = path.resolve(process.cwd(), dir);
+    console.log(abs);
+    
 
-    // const astPath = path.join(process.cwd(), '.graptor', 'graptor.ast.json');
-    // if (!fs.existsSync(astPath)) {
-    //   console.error('AST generation failed. Graph not generated.');
-    //   process.exit(1);
-    // }
+    
+    
 
-    // generateCodeGraph(astPath);
+
   });
 
 

@@ -11,6 +11,10 @@
     {
       "type": "export_statement",
       "text": "export function Exportfunction() {\r\n  \r\n}"
+    },
+    {
+      "type": "export_statement",
+      "text": "export function Exportfunction2() {\r\n  \r\n}"
     }
   ],
   "C:/Users/hp/X-project/graptor/test/components/helpers.ts": []
