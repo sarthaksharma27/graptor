@@ -3,6 +3,7 @@
 import { program } from 'commander';
 import { generateASTs } from './generateAst';
 import path from "path";
+import fs from "fs";
 // import { generateCodeGraph } from './generateCodeGraph';
 
 const pkg = require('../package.json');
@@ -16,17 +17,22 @@ program
   .command('run <directory>')
   .description('Generate code graph from source with a single command')
   .action((dir: string) => {
-    console.log(`Running Graptor on ${dir}`);
-    // generateASTs(dir);
-    console.log(dir);
     const abs = path.resolve(process.cwd(), dir);
-    console.log(abs);
-    
 
-    
-    
+    if (!fs.existsSync(abs)) {
+      console.error(`Error: Directory "${abs}" does not exist.`);
+      process.exit(1);
+    }
 
+    if (!fs.lstatSync(abs).isDirectory()) {
+      console.error(`Error: "${abs}" is not a directory.`);
+      process.exit(1);
+    }
 
+    console.log(`✅ Directory is valid. Running Graptor on ${dir} dir`);
+
+    generateASTs(abs);
+    
   });
 
 
