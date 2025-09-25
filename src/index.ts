@@ -4,7 +4,6 @@ import { program } from 'commander';
 import { generateASTs } from './generateAst';
 import path from "path";
 import fs from "fs";
-// import { generateCodeGraph } from './generateCodeGraph';
 
 const pkg = require('../package.json');
 
@@ -30,11 +29,8 @@ program
     }
 
     console.log(`✅ Directory is valid. Running Graptor on ${dir} dir`);
-
     generateASTs(abs);
     
   });
-
-
 
 program.parse();
