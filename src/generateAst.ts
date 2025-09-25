@@ -34,9 +34,9 @@ function cstToSemantic(node: SyntaxNode) {
 }
 
 
-export async function generateASTs(baseDir: string) {
+export async function generateASTs(absDir: string) {
   const files = await fg("**/*.{js,ts}", {
-    cwd: baseDir,        
+    cwd: absDir,        
     absolute: true,    
     ignore: [
       "**/node_modules/**",
