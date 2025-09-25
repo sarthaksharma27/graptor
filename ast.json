@@ -5,6 +5,10 @@
       "text": "import fg from \"fast-glob\";"
     },
     {
+      "type": "require_call",
+      "text": "require(\"fs\")"
+    },
+    {
       "type": "import_statement",
       "text": "import Parser, { SyntaxNode } from 'tree-sitter';"
     },
@@ -15,6 +19,10 @@
     {
       "type": "export_statement",
       "text": "export function Exportfunction2() {\r\n  \r\n}"
+    },
+    {
+      "type": "export_statement",
+      "text": "export function Exportfunction3() {\r\n  \r\n}"
     }
   ],
   "C:/Users/hp/X-project/graptor/test/components/helpers.ts": []

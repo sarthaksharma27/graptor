@@ -7,8 +7,9 @@ const parser = new Parser();
 parser.setLanguage(JavaScript);
 
 const SEMANTIC_NODE_TYPES = new Set([
-  'import_statement',
-  'export_statement',
+  "import_statement",           // ESM imports
+  "export_statement",           // ESM exports
+  "call_expression",            // catch require() and dynamic import()
 ]);
 
 interface SemanticNode {
@@ -16,22 +17,31 @@ interface SemanticNode {
   text: string;     
 }
 
-function cstToSemantic(node: SyntaxNode) {
-  console.log("Top-level named children:", node.namedChildren.length);
-  const SemanticNode: SemanticNode[] = []
-
-  node.namedChildren.forEach(child => {
-    if (SEMANTIC_NODE_TYPES.has(child.type)) { 
-       SemanticNode.push({
-          type: child.type,
-          text: child.text
-       })
-        
-    }
-  });
-
-  return SemanticNode;
+function isRequireCall(node: SyntaxNode): boolean {
+  if (node.type !== "call_expression") return false;
+  const functionNode = node.firstChild;
+  return functionNode?.type === "identifier" && functionNode.text === "require";
 }
+
+function cstToSemantic(node: SyntaxNode): SemanticNode[] {
+  const semanticNodes: SemanticNode[] = [];
+
+  function visit(n: SyntaxNode) {
+    if (n.type === "import_statement" || n.type === "export_statement") {
+      semanticNodes.push({ type: n.type, text: n.text });
+    }
+
+    if (isRequireCall(n)) {
+      semanticNodes.push({ type: "require_call", text: n.text });
+    }
+
+    n.namedChildren.forEach(visit);
+  }
+
+  visit(node);
+  return semanticNodes;
+}
+
 
 export async function generateASTs(absDir: string) {
   const files = await fg("**/*.{js,ts}", {
