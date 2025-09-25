@@ -33,7 +33,6 @@ function cstToSemantic(node: SyntaxNode) {
   return SemanticNode;
 }
 
-
 export async function generateASTs(absDir: string) {
   const files = await fg("**/*.{js,ts}", {
     cwd: absDir,        
@@ -47,7 +46,6 @@ export async function generateASTs(absDir: string) {
   });
 
   const allASTs: Record<string, SemanticNode[]> = {};
-
 
     for (const file of files) {
     const code = fs.readFileSync(file, "utf8");
