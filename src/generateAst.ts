@@ -64,6 +64,6 @@ export async function generateASTs(absDir: string) {
     allASTs[file] = ast; 
   }
 
-  fs.writeFileSync('ast.json', JSON.stringify(allASTs, null, 2), 'utf8');
+  fs.writeFileSync(`${absDir}/ast.json`, JSON.stringify(allASTs, null, 2), 'utf8');
   console.log('Ast written successfully!');
 }
