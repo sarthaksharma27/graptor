@@ -6,11 +6,11 @@ import fs from 'fs'
 const parser = new Parser();
 parser.setLanguage(JavaScript);
 
-const SEMANTIC_NODE_TYPES = new Set([
-  "import_statement",           // ESM imports
-  "export_statement",           // ESM exports
-  "call_expression",            // catch require() and dynamic import()
-]);
+// const SEMANTIC_NODE_TYPES = new Set([
+//   "import_statement",           // ESM imports
+//   "export_statement",           // ESM exports
+//   "call_expression",            // catch require() and dynamic import()
+// ]);
 
 interface SemanticNode {
   type: string;      
