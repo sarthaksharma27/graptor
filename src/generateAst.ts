@@ -2,6 +2,7 @@ import fg from "fast-glob";
 import Parser, { SyntaxNode } from 'tree-sitter';
 const JavaScript = require('tree-sitter-javascript');
 import fs from 'fs'
+import { generateCodegraph } from "./codeGraph";
 
 const parser = new Parser();
 parser.setLanguage(JavaScript);
@@ -12,7 +13,7 @@ parser.setLanguage(JavaScript);
 //   "call_expression",            // catch require() and dynamic import()
 // ]);
 
-interface SemanticNode {
+export interface SemanticNode {
   type: string;      
   text: string;     
 }
@@ -66,4 +67,6 @@ export async function generateASTs(absDir: string) {
 
   fs.writeFileSync(`${absDir}/ast.json`, JSON.stringify(allASTs, null, 2), 'utf8');
   console.log('Ast written successfully!');
+
+  generateCodegraph(allASTs)
 }
