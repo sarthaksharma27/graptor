@@ -11,7 +11,7 @@ type EdgeType = "exports" | "depends_on" | "requires";
 interface edge {
     from: string;
     to: string;
-    edgeType: EdgeType 
+    type: EdgeType 
 }
 
 export async function generateCodegraph(astMap: Record<string, SemanticNode[]>) {
