@@ -23,11 +23,28 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 const name = node.text;
                 graphNodes.push({id: name, type: "external_module"});
                 graphEdges.push({from: filePath, to: name, type: "depends_on"});
-                console.log(graphEdges);
-                
+            } else if (node.type === "export_statement") {
+                const name = node.text;
+                graphNodes.push({id: name, type: "exported_function"});
+                graphEdges.push({from: filePath, to: name, type: "exports"});
+            } else if (node.type === "require_call") {
+                const name = node.text;
+                graphNodes.push({id: name, type: "external_module"});
+                graphEdges.push({from: filePath, to: name, type: "requires"});
             }
+            
         }
+
+        
     }
+
+    console.log("These are the nodes");
+        
+        console.log(graphNodes);
+
+        console.log("These are the edges");
+        
+        console.log(graphEdges);
     
 }
 
