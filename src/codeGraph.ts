@@ -21,8 +21,8 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
         for(const node of nodes) {
             if(node.type === "import_statement") {
                 const name = node.text;
-                console.log(name);
-                
+                graphNodes.push({id: name, type: "external_module"});
+                console.log(graphNodes);
             }
         }
     }
