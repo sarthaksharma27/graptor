@@ -35,7 +35,7 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
             
         }
     } 
-
+    
     return {graphNodes, graphEdges}
 }
 

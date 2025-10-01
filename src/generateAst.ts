@@ -68,5 +68,8 @@ export async function generateASTs(absDir: string) {
   fs.writeFileSync(`${absDir}/ast.json`, JSON.stringify(allASTs, null, 2), 'utf8');
   console.log('Ast written successfully!');
 
-  generateCodegraph(allASTs)
+  const codeGraph = await generateCodegraph(allASTs)
+  console.log(codeGraph);
+  
+  fs.writeFileSync(`${absDir}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
 }
