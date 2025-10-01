@@ -15,9 +15,8 @@ interface edge {
 }
 
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
-    // console.log(astMaps)
     for (const filePath in astMaps) {
-        const nodes = astMaps[filePath]; // nodes is SemanticNode[]
+        const nodes = astMaps[filePath];
         console.log(filePath, nodes);
     }
     
