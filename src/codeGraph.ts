@@ -18,8 +18,13 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
     for (const filePath in astMaps) {
         const nodes = astMaps[filePath];
         graphNodes.push({id: filePath, type: "File"})
-        console.log("this is array", graphNodes);
-        
+        for(const node of nodes) {
+            if(node.type === "import_statement") {
+                const name = node.text;
+                console.log(name);
+                
+            }
+        }
     }
     
 }
