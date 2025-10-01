@@ -22,7 +22,9 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
             if(node.type === "import_statement") {
                 const name = node.text;
                 graphNodes.push({id: name, type: "external_module"});
-                console.log(graphNodes);
+                graphEdges.push({from: filePath, to: name, type: "depends_on"});
+                console.log(graphEdges);
+                
             }
         }
     }
