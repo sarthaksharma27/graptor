@@ -1,18 +1,21 @@
 import { SemanticNode } from "./generateAst";
 
-interface node {
+interface Node {
     id: string;
     type: "File" | "exported_function" | "external_module";
     
 }
 
-type EdgeType = "exports" | "depends_on" | "requires";
+type Edge = "exports" | "depends_on" | "requires";
 
 interface edge {
     from: string;
     to: string;
-    type: EdgeType 
+    type: Edge 
 }
+
+const graphNodes: Node[] = []
+const graphEdges: Edge[] = []
 
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
     for (const filePath in astMaps) {
