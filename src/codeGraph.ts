@@ -3,15 +3,12 @@ import { SemanticNode } from "./generateAst";
 interface Node {
     id: string;
     type: "File" | "exported_function" | "external_module";
-    
-}
+} 
 
-type Edge = "exports" | "depends_on" | "requires";
-
-interface edge {
+interface Edge {
     from: string;
     to: string;
-    type: Edge 
+    type: "exports" | "depends_on" | "requires";
 }
 
 const graphNodes: Node[] = []
