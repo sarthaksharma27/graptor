@@ -17,7 +17,9 @@ const graphEdges: Edge[] = []
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
     for (const filePath in astMaps) {
         const nodes = astMaps[filePath];
-        console.log(filePath, nodes);
+        graphNodes.push({id: filePath, type: "File"})
+        console.log("this is array", graphNodes);
+        
     }
     
 }
