@@ -1,4 +1,5 @@
 import { SemanticNode } from "./generateAst";
+import fs from 'fs'
 
 interface Node {
     id: string;
@@ -11,10 +12,9 @@ interface Edge {
     type: "exports" | "depends_on" | "requires";
 }
 
-const graphNodes: Node[] = []
-const graphEdges: Edge[] = []
-
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
+    const graphNodes: Node[] = [];
+    const graphEdges: Edge[] = [];
     for (const filePath in astMaps) {
         const nodes = astMaps[filePath];
         graphNodes.push({id: filePath, type: "File"})
@@ -34,17 +34,8 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
             }
             
         }
+    } 
 
-        
-    }
-
-    console.log("These are the nodes");
-        
-        console.log(graphNodes);
-
-        console.log("These are the edges");
-        
-        console.log(graphEdges);
-    
+    return {graphNodes, graphEdges}
 }
 
