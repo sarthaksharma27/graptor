@@ -69,7 +69,7 @@ export async function generateASTs(absDir: string) {
   console.log('Ast written successfully!');
 
   const codeGraph = await generateCodegraph(allASTs)
-  console.log(codeGraph);
   
   fs.writeFileSync(`${absDir}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
+  console.log('codeGraph written successfully!');
 }
