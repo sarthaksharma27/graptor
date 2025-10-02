@@ -2,13 +2,13 @@ import { SemanticNode } from "./generateAst";
 
 interface Node {
     id: string;
-    type: "File" | "exported_function" | "external_module";
+    type: "File" | "exported_function" | "external_module" | "variable";
 } 
 
 interface Edge {
     from: string;
     to: string;
-    type: "exports" | "depends_on" | "requires";
+    type: "exports" | "depends_on" | "requires" | "declares";
 }
 
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
