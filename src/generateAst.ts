@@ -50,13 +50,13 @@ function cstToSemantic(node: SyntaxNode): SemanticNode[] {
       semanticNodes.push({ type: n.type, text: n.text });
     }
 
-    // if (n.type === "call_expression") {
-    //   const functionNode = n.firstChild; 
-    //   const funcName = functionNode?.text || "<anonymous>";
-    //   console.log(funcName);
-      
-    //   semanticNodes.push({ type: "function_call", text: funcName });
-    // }  
+    if (n.type === "call_expression") {
+      const funcNode = n.firstChild;
+      const funcName = funcNode?.text;
+      if (funcName && declaredFunctions.has(funcName)) {
+          semanticNodes.push({ type: "function_call", text: funcName });
+      }
+    }  
   
     n.namedChildren.forEach(visit);
   }
