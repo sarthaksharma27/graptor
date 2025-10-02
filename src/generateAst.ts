@@ -36,12 +36,12 @@ function cstToSemantic(node: SyntaxNode): SemanticNode[] {
       semanticNodes.push({ type: "require_call", text: n.text });
     }
 
-    if (n.type === "lexical_declaration") {
+    if (n.type === "lexical_declaration" || n.type === "variable_declaration") {
       const keyword = n.firstChild?.text;
-      if (keyword === "let" || keyword === "const") {
+      if (keyword === "let" || keyword === "const" || keyword === "var") {
         semanticNodes.push({ type: `${keyword} declaration`, text: n.text})
       }
-    }    
+    } 
 
     n.namedChildren.forEach(visit);
   }
