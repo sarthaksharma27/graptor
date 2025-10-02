@@ -1,5 +1,4 @@
 import { SemanticNode } from "./generateAst";
-import fs from 'fs'
 
 interface Node {
     id: string;
