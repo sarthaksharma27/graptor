@@ -43,6 +43,10 @@ function cstToSemantic(node: SyntaxNode): SemanticNode[] {
       }
     } 
 
+    if (n.type === "function_declaration") {
+      semanticNodes.push({ type: n.type, text: n.text });
+    }
+
     n.namedChildren.forEach(visit);
   }
 
