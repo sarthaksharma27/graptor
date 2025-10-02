@@ -30,6 +30,11 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 const name = node.text;
                 graphNodes.push({id: name, type: "external_module"});
                 graphEdges.push({from: filePath, to: name, type: "requires"});
+            } else if (node.type === "let declaration" || node.type === "const declaration" || node.type === "var declaration") {
+                const name = node.text;
+                graphNodes.push({id: name, type: "variable"});
+                graphEdges.push({from: filePath, to: name, type: "declares"});
+                
             }
             
         }
