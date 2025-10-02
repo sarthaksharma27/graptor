@@ -26,6 +26,7 @@ function isRequireCall(node: SyntaxNode): boolean {
 
 function cstToSemantic(node: SyntaxNode): SemanticNode[] {
   const semanticNodes: SemanticNode[] = [];
+  const declaredFunctions = new Set<string>();
 
   function visit(n: SyntaxNode) {
     if (n.type === "import_statement" || n.type === "export_statement") {
@@ -44,9 +45,19 @@ function cstToSemantic(node: SyntaxNode): SemanticNode[] {
     } 
 
     if (n.type === "function_declaration") {
+      const nameNode = n.namedChildren[0];
+      declaredFunctions.add(nameNode.text);
       semanticNodes.push({ type: n.type, text: n.text });
     }
 
+    // if (n.type === "call_expression") {
+    //   const functionNode = n.firstChild; 
+    //   const funcName = functionNode?.text || "<anonymous>";
+    //   console.log(funcName);
+      
+    //   semanticNodes.push({ type: "function_call", text: funcName });
+    // }  
+  
     n.namedChildren.forEach(visit);
   }
 
