@@ -2,13 +2,13 @@ import { SemanticNode } from "./generateAst";
 
 interface Node {
     id: string;
-    type: "File" | "exported_function" | "external_module" | "variable";
+    type: "File" | "exported_function" | "external_module" | "variable" | "function_declaration";
 } 
 
 interface Edge {
     from: string;
     to: string;
-    type: "exports" | "depends_on" | "requires" | "declares";
+    type: "exports" | "depends_on" | "requires" | "declares" | "function_call";
 }
 
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
@@ -35,7 +35,14 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 graphNodes.push({id: name, type: "variable"});
                 graphEdges.push({from: filePath, to: name, type: "declares"});
                 
-            }
+            } else if (node.type === "function_declaration") {
+                const name = node.text;
+                console.log(name);
+                
+                // graphNodes.push({id: name, type: "variable"});
+                // graphEdges.push({from: filePath, to: name, type: "declares"});
+                
+            } 
             
         }
     } 
