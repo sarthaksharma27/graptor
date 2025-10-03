@@ -8,7 +8,7 @@ interface Node {
 interface Edge {
     from: string;
     to: string;
-    type: "exports" | "depends_on" | "requires" | "declares" | "function_call";
+    type: "exports" | "depends_on" | "requires" | "declares" | "function_defines" | "function_call";
 }
 
 export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>) {
@@ -37,10 +37,8 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 
             } else if (node.type === "function_declaration") {
                 const name = node.text;
-                console.log(name);
-                
-                // graphNodes.push({id: name, type: "variable"});
-                // graphEdges.push({from: filePath, to: name, type: "declares"});
+                graphNodes.push({id: name, type: "function_declaration"});
+                graphEdges.push({from: filePath, to: name, type: "function_defines"});
                 
             } 
             
