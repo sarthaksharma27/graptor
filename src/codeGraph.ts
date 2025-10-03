@@ -22,14 +22,17 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 const name = node.text;
                 graphNodes.push({id: name, type: "external_module"});
                 graphEdges.push({from: filePath, to: name, type: "depends_on"});
+
             } else if (node.type === "export_statement") {
                 const name = node.text;
                 graphNodes.push({id: name, type: "exported_function"});
                 graphEdges.push({from: filePath, to: name, type: "exports"});
+
             } else if (node.type === "require_call") {
                 const name = node.text;
                 graphNodes.push({id: name, type: "external_module"});
                 graphEdges.push({from: filePath, to: name, type: "requires"});
+
             } else if (node.type === "let declaration" || node.type === "const declaration" || node.type === "var declaration") {
                 const name = node.text;
                 graphNodes.push({id: name, type: "variable"});
@@ -39,6 +42,7 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 const name = node.text;
                 graphNodes.push({id: name, type: "function_declaration"});
                 graphEdges.push({from: filePath, to: name, type: "function_defines"});
+                
             } else if (node.type === "function_call") {
                 const name = node.text;
                 graphEdges.push({from: filePath, to: name, type: "function_call"});
