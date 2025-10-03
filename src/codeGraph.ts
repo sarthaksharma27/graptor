@@ -39,7 +39,9 @@ export async function generateCodegraph(astMaps: Record<string, SemanticNode[]>)
                 const name = node.text;
                 graphNodes.push({id: name, type: "function_declaration"});
                 graphEdges.push({from: filePath, to: name, type: "function_defines"});
-                
+            } else if (node.type === "function_call") {
+                const name = node.text;
+                graphEdges.push({from: filePath, to: name, type: "function_call"});
             } 
             
         }
