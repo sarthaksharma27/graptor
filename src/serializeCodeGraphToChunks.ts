@@ -6,6 +6,6 @@ interface codeGraph {
     graphEdges: Edge[]
 }
 
-export function serializeCodeGraphToChunks(codeGraph: codeGraph) {
+export function serializeCodeGraphToChunks(graph: codeGraph) {
     
 }
