@@ -11,8 +11,18 @@ export function serializeCodeGraphToChunks(graph: codeGraph) {
     
     for(const file of fileNodes) {
         const fileEdges = graph.graphEdges.filter(e => e.from === file.id )
-        console.log(fileEdges);
+        
+        const grouped: Record<string, string[]> = {};
+        for (const edge of fileEdges) {
+            if (!grouped[edge.type]) grouped[edge.type] = [];
+            grouped[edge.type].push(edge.to);
+        }
+
+        console.log(grouped);
         
     }
+
+    
+    
     
 }
