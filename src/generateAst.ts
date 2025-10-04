@@ -3,6 +3,7 @@ import Parser, { SyntaxNode } from 'tree-sitter';
 const JavaScript = require('tree-sitter-javascript');
 import fs from 'fs'
 import { generateCodegraph } from "./codeGraph";
+import { serializeCodeGraphToChunks } from "./serializeCodeGraphToChunks";
 
 const parser = new Parser();
 parser.setLanguage(JavaScript);
@@ -85,7 +86,10 @@ export async function generateASTs(absDir: string) {
   console.log('Ast written successfully!');
 
   const codeGraph = await generateCodegraph(allASTs)
-  
   fs.writeFileSync(`${absDir}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
   console.log('codeGraph written successfully!');
+
+  const chunk = serializeCodeGraphToChunks(codeGraph);
+  console.log(chunk);
+  
 }
