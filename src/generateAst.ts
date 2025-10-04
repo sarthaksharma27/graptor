@@ -7,12 +7,6 @@ import { generateCodegraph } from "./codeGraph";
 const parser = new Parser();
 parser.setLanguage(JavaScript);
 
-// const SEMANTIC_NODE_TYPES = new Set([
-//   "import_statement",           // ESM imports
-//   "export_statement",           // ESM exports
-//   "call_expression",            // catch require() and dynamic import()
-// ]);
-
 export interface SemanticNode {
   type: string;      
   text: string;     
