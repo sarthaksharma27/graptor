@@ -1,11 +1,11 @@
 import { SemanticNode } from "./generateAst";
 
-interface Node {
+export interface Node {
     id: string;
     type: "File" | "exported_function" | "external_module" | "variable" | "function_declaration";
 } 
 
-interface Edge {
+export interface Edge {
     from: string;
     to: string;
     type: "exports" | "depends_on" | "requires" | "declares" | "function_defines" | "function_call";
