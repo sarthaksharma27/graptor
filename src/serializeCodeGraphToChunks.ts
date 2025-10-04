@@ -7,7 +7,12 @@ interface codeGraph {
 }
 
 export function serializeCodeGraphToChunks(graph: codeGraph) {
-    const fileNode = graph.graphNodes.filter(n => n.type === "File")
-    console.log(fileNode);
+    const fileNodes = graph.graphNodes.filter(n => n.type === "File")
+    
+    for(const file of fileNodes) {
+        const fileEdges = graph.graphEdges.filter(e => e.from === file.id )
+        console.log(fileEdges);
+        
+    }
     
 }
