@@ -89,7 +89,8 @@ export async function generateASTs(absDir: string) {
   fs.writeFileSync(`${absDir}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
   console.log('codeGraph written successfully!');
 
-  const chunk = serializeCodeGraphToChunks(codeGraph);
-  // console.log(chunk);
+  const chunks = serializeCodeGraphToChunks(codeGraph);
+  fs.writeFileSync(`${absDir}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
+  console.log('Text chunks written successfully!');
   
 }
