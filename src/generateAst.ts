@@ -90,6 +90,6 @@ export async function generateASTs(absDir: string) {
   console.log('codeGraph written successfully!');
 
   const chunk = serializeCodeGraphToChunks(codeGraph);
-  console.log(chunk);
+  // console.log(chunk);
   
 }
