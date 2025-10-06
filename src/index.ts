@@ -6,6 +6,7 @@ import path from "path";
 import fs from "fs";
 import { generateCodegraph } from './codeGraph';
 import { serializeCodeGraphToChunks } from './serializeCodeGraphToChunks';
+import inquirer from 'inquirer';
 
 const pkg = require('../package.json');
 
@@ -33,7 +34,7 @@ program
     console.log(`✅ Directory is valid. Running Graptor on ${dir} dir`);
 
     const ast = await generateASTs(abs);
-    fs.writeFileSync(`${abs}/ast.json`, JSON.stringify(ast, null, 2), 'utf8');
+    // fs.writeFileSync(`${abs}/ast.json`, JSON.stringify(ast, null, 2), 'utf8');
     console.log('Ast written successfully!');
 
     const codeGraph = await generateCodegraph(ast)
@@ -44,6 +45,69 @@ program
     fs.writeFileSync(`${abs}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
     console.log('Text chunks written successfully!');
     
+      const { embedNow } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'embedNow',
+      message: 'Do you want to embed these chunks into vectors now?',
+      default: true,
+    },
+  ]);
+
+  if (!embedNow) {
+    console.log('Skipped embedding. codeGraph written successfully!');
+    return;
+  }
+
+  const { useOwnModel } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'useOwnModel',
+      message: 'Do you want to use your own model or want to go with the Free model?',
+      choices: [
+        { name: 'Use my own model (requires API key)', value: true },
+        { name: 'Use free/local model (no API key required)', value: false },
+      ],
+    },
+  ]);
+
+  let provider: string;
+  let model: string;
+  let apiKey: string | undefined;
+
+  if (useOwnModel) {
+      const answers = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'provider',
+          message: 'Select your embedding provider:',
+          choices: ['OpenAI', 'Hugging Face Transformers', 'Ollama'],
+        },
+        {
+          type: 'input',
+          name: 'model',
+          message: 'Enter the model name:',
+          default: 'text-embedding-3-small',
+        },
+        {
+          type: 'input',
+          name: 'apiKey',
+          message: 'Enter your API key:',
+        },
+      ]);
+
+      provider = answers.provider;
+      model = answers.model;
+      apiKey = answers.apiKey;
+    } else {
+      provider = 'local';
+      model = 'nomic-embed-text'; 
+      apiKey = undefined;
+    }
+
+    console.log(`Using ${provider} (${model})...`);
+    // await embedChunks(chunksPath, { provider, model, apiKey });
+
   });
 
 program.parse();
