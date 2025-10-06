@@ -49,7 +49,7 @@ program
     {
       type: 'confirm',
       name: 'embedNow',
-      message: 'Do you want to embed these chunks into vectors now?',
+      message: 'Do you want to embed this code Graph into vectors now?',
       default: true,
     },
   ]);
