@@ -7,6 +7,7 @@ import fs from "fs";
 import { generateCodegraph } from './codeGraph';
 import { serializeCodeGraphToChunks } from './serializeCodeGraphToChunks';
 import inquirer from 'inquirer';
+import { generateVectorEmbeddings } from './generateVectorEmbeddings';
 
 const pkg = require('../package.json');
 
@@ -49,7 +50,7 @@ program
     {
       type: 'confirm',
       name: 'embedNow',
-      message: 'Do you want to embed this code Graph into vectors now?',
+      message: 'Do you want to embed this chunks into vectors now?',
       default: true,
     },
   ]);
@@ -73,7 +74,7 @@ program
 
   let provider: string;
   let model: string;
-  let apiKey: string | undefined;
+  let apiKey: string;
 
   if (useOwnModel) {
       const answers = await inquirer.prompt([
@@ -102,11 +103,11 @@ program
     } else {
       provider = 'local';
       model = 'nomic-embed-text'; 
-      apiKey = undefined;
+      apiKey = "local";
     }
 
-    console.log(`Using ${provider} (${model})...`);
-    // await embedChunks(chunksPath, { provider, model, apiKey });
+    console.log(`Using ${provider} (${model})`);
+    generateVectorEmbeddings(provider, model, apiKey)
 
   });
 
