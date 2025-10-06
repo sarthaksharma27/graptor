@@ -2,8 +2,6 @@ import fg from "fast-glob";
 import Parser, { SyntaxNode } from 'tree-sitter';
 const JavaScript = require('tree-sitter-javascript');
 import fs from 'fs'
-import { generateCodegraph } from "./codeGraph";
-import { serializeCodeGraphToChunks } from "./serializeCodeGraphToChunks";
 
 const parser = new Parser();
 parser.setLanguage(JavaScript);
@@ -81,16 +79,5 @@ export async function generateASTs(absDir: string) {
     const ast = cstToSemantic(tree.rootNode);
     allASTs[file] = ast; 
   }
-
-  fs.writeFileSync(`${absDir}/ast.json`, JSON.stringify(allASTs, null, 2), 'utf8');
-  console.log('Ast written successfully!');
-
-  const codeGraph = await generateCodegraph(allASTs)
-  fs.writeFileSync(`${absDir}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
-  console.log('codeGraph written successfully!');
-
-  const chunks = serializeCodeGraphToChunks(codeGraph);
-  fs.writeFileSync(`${absDir}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
-  console.log('Text chunks written successfully!');
-  
+  return allASTs
 }
