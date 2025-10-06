@@ -64,10 +64,10 @@ program
     {
       type: 'list',
       name: 'useOwnModel',
-      message: 'Do you want to use your own model or want to go with the Free model?',
+      message: 'Do you want to use your own model or want to go with the open source model?',
       choices: [
-        { name: 'Use my own model (requires API key)', value: true },
-        { name: 'Use free/local model (no API key required)', value: false },
+        { name: 'Use your own model (recommended)', value: true },
+        { name: 'Use free/open source model (no API key required)', value: false },
       ],
     },
   ]);
