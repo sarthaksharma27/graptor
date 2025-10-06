@@ -1,6 +1,6 @@
 import { Edge, Node } from "./codeGraph"
 
-interface TextChunk {
+export interface TextChunk {
   id: string;
   text: string;
   metadata: Record<string, any>;

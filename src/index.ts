@@ -107,7 +107,7 @@ program
     }
 
     console.log(`Using ${provider} (${model})`);
-    generateVectorEmbeddings(provider, model, apiKey)
+    generateVectorEmbeddings( chunks, { provider, model, apiKey })
 
   });
 
