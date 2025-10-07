@@ -129,7 +129,7 @@ program
     }
     
     console.log(`Using ${provider} (${model})`);
-    generateVectorEmbeddings( chunks, { provider, model, apiKey })
+    generateVectorEmbeddings(chunks) 
     saveConfig({ provider, model, apiKey })
 
   });

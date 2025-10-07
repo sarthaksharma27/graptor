@@ -20,4 +20,14 @@ export function saveConfig(config: GraptorConfig) {
   console.log(`Configuration saved at ${CONFIG_PATH}`);
 }
 
+export function loadConfig(): GraptorConfig | null {
+  if (!fs.existsSync(CONFIG_PATH)) return null;
+  try {
+    const data = fs.readFileSync(CONFIG_PATH, "utf8");
+    return JSON.parse(data) as GraptorConfig;
+  } catch (e) {
+    console.error("Failed to load config:", e);
+    return null;
+  }
+}
 

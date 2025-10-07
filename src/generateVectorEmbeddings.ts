@@ -1,9 +1,13 @@
+import { loadConfig } from "./config";
 import { TextChunk } from "./serializeCodeGraphToChunks";
 
-export async function generateVectorEmbeddings(chunks: TextChunk[], options: { provider: string, model: string, apiKey: string } ) {
-    const { provider, model, apiKey } = options
+let config = loadConfig();
+if (!config) {
+    console.log("No config file found!");
+    
+}
+
+export async function generateVectorEmbeddings(chunks: TextChunk[]) {
     console.log('Chunks:', chunks.length);
-    console.log('Provider:', provider, 'Model:', model, 'API Key:', apiKey);
-    
-    
+    console.log( "provider:", config?.provider, "model:", config?.model, "apiKey:", config?.apiKey);
 }
