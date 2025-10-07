@@ -67,7 +67,7 @@ program
       message: 'Do you want to use your own model or want to go with the open source model?',
       choices: [
         { name: 'Use your own model (recommended)', value: true },
-        { name: 'Use free/open source model (no API key required)', value: false },
+        { name: 'Use free/open source model', value: false },
       ],
     },
   ]);
