@@ -101,8 +101,8 @@ program
       model = answers.model;
       apiKey = answers.apiKey;
     } else {
-      provider = 'local';
-      model = 'nomic-embed-text'; 
+      provider = 'Hugging Face';
+      model = 'BAAI/bge-small-en-v1.5'; 
       apiKey = "local";
     }
 
