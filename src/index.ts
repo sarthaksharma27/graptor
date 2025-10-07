@@ -8,6 +8,7 @@ import { generateCodegraph } from './codeGraph';
 import { serializeCodeGraphToChunks } from './serializeCodeGraphToChunks';
 import inquirer from 'inquirer';
 import { generateVectorEmbeddings } from './generateVectorEmbeddings';
+import { testing } from './config';
 
 const pkg = require('../package.json');
 
@@ -129,6 +130,7 @@ program
     
     console.log(`Using ${provider} (${model})`);
     generateVectorEmbeddings( chunks, { provider, model, apiKey })
+    testing()
 
   });
 
