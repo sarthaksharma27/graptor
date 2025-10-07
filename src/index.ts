@@ -82,7 +82,7 @@ program
           type: 'list',
           name: 'provider',
           message: 'Select your embedding provider:',
-          choices: ['OpenAI', 'Hugging Face Transformers', 'Ollama'],
+          choices: ['OpenAI'],
         },
         {
           type: 'input',
