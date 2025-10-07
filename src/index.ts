@@ -100,12 +100,33 @@ program
       provider = answers.provider;
       model = answers.model;
       apiKey = answers.apiKey;
-    } else {
-      provider = 'Hugging Face';
-      model = 'BAAI/bge-small-en-v1.5'; 
-      apiKey = "local";
-    }
 
+    } else {
+      const answers = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'provider',
+          message: 'Select your embedding provider:',
+          choices: ['Hugging Face'],
+        },
+        {
+          type: 'input',
+          name: 'model',
+          message: 'Enter the model name:',
+          default: 'BAAI/bge-small-en-v1.5',
+        },
+        {
+          type: 'input',
+          name: 'apiKey',
+          message: 'Enter your API key:',
+        },
+      ]);
+
+      provider = answers.provider;
+      model = answers.model;
+      apiKey = answers.apiKey;
+    }
+    
     console.log(`Using ${provider} (${model})`);
     generateVectorEmbeddings( chunks, { provider, model, apiKey })
 
