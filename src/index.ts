@@ -115,21 +115,16 @@ program
           name: 'model',
           message: 'Enter the model name:',
           default: 'BAAI/bge-small-en-v1.5',
-        },
-        {
-          type: 'input',
-          name: 'apiKey',
-          message: 'Enter your API key:',
-        },
+        }
       ]);
 
       provider = answers.provider;
       model = answers.model;
-      apiKey = answers.apiKey;
+      apiKey = "";
     }
     
     console.log(`Using ${provider} (${model})`);
-    generateVectorEmbeddings(chunks) 
+    const embeddings = generateVectorEmbeddings(chunks) 
     saveConfig({ provider, model, apiKey })
 
   });
