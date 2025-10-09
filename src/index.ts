@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { generateASTs } from './generateAst';
+import { generateASTs } from './generateAst.js';
 import path from "path";
 import fs from "fs";
-import { generateCodegraph } from './codeGraph';
-import { serializeCodeGraphToChunks } from './serializeCodeGraphToChunks';
+import { generateCodegraph } from './codeGraph.js';
+import { serializeCodeGraphToChunks } from './serializeCodeGraphToChunks.js';
 import inquirer from 'inquirer';
-import { generateVectorEmbeddings } from './generateVectorEmbeddings';
-import { saveConfig } from './config';
+import { generateVectorEmbeddings } from './generateVectorEmbeddings.js';
+import { saveConfig } from './config.js';
 
-const pkg = require('../package.json');
+// const pkg = require('../package.json');
 
 program
   .name('graptor')
   .description('Graptor is an open-source graph engine that understands your complex codebases.')
-  .version(pkg.version);
+  // .version(pkg.version);
 
 program
   .command('run <directory>')
