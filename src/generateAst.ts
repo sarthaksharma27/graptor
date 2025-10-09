@@ -1,10 +1,13 @@
 import fg from "fast-glob";
 import Parser, { SyntaxNode } from 'tree-sitter';
-const JavaScript = require('tree-sitter-javascript');
+// const JavaScript = require('tree-sitter-javascript');
+
+import JavaScript from "tree-sitter-javascript";
 import fs from 'fs'
 
 const parser = new Parser();
-parser.setLanguage(JavaScript);
+// parser.setLanguage(JavaScript);
+parser.setLanguage(JavaScript as import("tree-sitter").Language);
 
 export interface SemanticNode {
   type: string;      
