@@ -124,7 +124,11 @@ program
     }
     
     console.log(`Using ${provider} (${model})`);
-    const embeddings = generateVectorEmbeddings(chunks) 
+    console.time('embedding');
+    const embeddings = generateVectorEmbeddings(chunks)
+    console.timeEnd('embedding'); 
+    console.log(process.memoryUsage());
+
     saveConfig({ provider, model, apiKey })
 
   });
