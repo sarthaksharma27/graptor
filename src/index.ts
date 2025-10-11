@@ -124,10 +124,12 @@ program
     }
     
     console.log(`Using ${provider} (${model})`);
-    console.time('embedding');
-    const embeddings = generateVectorEmbeddings(chunks)
-    console.timeEnd('embedding'); 
-    console.log(process.memoryUsage());
+    // console.time('embedding');
+    const embeddings = await generateVectorEmbeddings(chunks);
+    fs.writeFileSync(`${abs}/embedding.json`, JSON.stringify(embeddings, null, 2), 'utf8');
+    console.log('chunks embeddings written successfully!');
+    // console.timeEnd('embedding'); 
+    // console.log(process.memoryUsage());
 
     saveConfig({ provider, model, apiKey })
 
