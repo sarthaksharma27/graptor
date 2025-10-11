@@ -44,8 +44,8 @@ program
     console.log('codeGraph written successfully!');
 
     const chunks = serializeCodeGraphToChunks(codeGraph);
-    fs.writeFileSync(`${abs}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
-    console.log('Text chunks written successfully!');
+    // fs.writeFileSync(`${abs}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
+    // console.log('Text chunks written successfully!');
     
       const { embedNow } = await inquirer.prompt([
     {
