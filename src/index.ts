@@ -47,7 +47,7 @@ program
     // fs.writeFileSync(`${abs}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
     // console.log('Text chunks written successfully!');
     
-      const { embedNow } = await inquirer.prompt([
+    const { embedNow } = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'embedNow',
