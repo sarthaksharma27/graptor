@@ -33,15 +33,15 @@ program
       process.exit(1);
     }
 
-    console.log(`✅ Directory is valid. Running Graptor on ${dir} dir`);
+    console.log(`Directory is valid. Running Graptor on ${dir} dir`);
 
     const ast = await generateASTs(abs);
     // fs.writeFileSync(`${abs}/ast.json`, JSON.stringify(ast, null, 2), 'utf8');
-    console.log('Ast written successfully!');
+    // console.log('Ast written successfully!');
 
     const codeGraph = await generateCodegraph(ast)
     fs.writeFileSync(`${abs}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
-    console.log('codeGraph written successfully!');
+    console.log('Code Graph written successfully!');
 
     const chunks = serializeCodeGraphToChunks(codeGraph);
     // fs.writeFileSync(`${abs}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
