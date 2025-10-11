@@ -33,7 +33,7 @@ program
       process.exit(1);
     }
 
-    console.log(`Directory is valid. Running Graptor on ${dir} dir`);
+    console.log(`✔ Directory is valid. Running Graptor on ${dir} dir`);
 
     const ast = await generateASTs(abs);
     // fs.writeFileSync(`${abs}/ast.json`, JSON.stringify(ast, null, 2), 'utf8');
@@ -41,7 +41,7 @@ program
 
     const codeGraph = await generateCodegraph(ast)
     fs.writeFileSync(`${abs}/code-graph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
-    console.log('Code Graph written successfully!');
+    console.log('✔ Code Graph written successfully!');
 
     const chunks = serializeCodeGraphToChunks(codeGraph);
     // fs.writeFileSync(`${abs}/chunks.json`, JSON.stringify(chunks, null, 2), 'utf8');
@@ -124,14 +124,14 @@ program
     }
     
     console.log(`Using ${provider} (${model})`);
-    // console.time('embedding');
+    console.time('Embedding time');
     const embeddings = await generateVectorEmbeddings(chunks);
     fs.writeFileSync(`${abs}/embedding.json`, JSON.stringify(embeddings, null, 2), 'utf8');
-    console.log('chunks embeddings written successfully!');
-    // console.timeEnd('embedding'); 
+    console.log('✔ Embeddings written successfully!');
+    console.timeEnd('Embedding time'); 
     // console.log(process.memoryUsage());
 
-    saveConfig({ provider, model, apiKey })
+    // saveConfig({ provider, model, apiKey })
 
   });
 
