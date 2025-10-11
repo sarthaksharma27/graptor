@@ -40,7 +40,7 @@ program
     // console.log('Ast written successfully!');
 
     const codeGraph = await generateCodegraph(ast)
-    fs.writeFileSync(`${abs}/codeGraph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
+    fs.writeFileSync(`${abs}/code-graph.json`, JSON.stringify(codeGraph, null, 2), 'utf8');
     console.log('Code Graph written successfully!');
 
     const chunks = serializeCodeGraphToChunks(codeGraph);
