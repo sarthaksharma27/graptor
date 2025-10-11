@@ -1,6 +1,6 @@
 {
   "name": "graptor",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Generate ASTs of your codebase via CLI",
   "homepage": "https://github.com/sarthaksharma27/graptor#readme",
   "bugs": {
